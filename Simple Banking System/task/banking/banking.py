@@ -4,16 +4,27 @@ main_menu = """1. Create an account
 2. Log into account
 0. Exit"""
 
+account_menu = """1. Balance
+2. Log out
+0. Exit"""
+
 option = 100
 
-while option != 0:  # Create new account option
+pin_list = []
+card_list = []
+balance_list = []
+
+while option != 0:
     print(main_menu)
     option = int(input())
 
-    if option == 1:
+    if option == 1:  # Create new account option
         card = "400000"
-        for i in range(10):
-            card += str(random.randrange(10))
+        while True:
+            for i in range(10):
+                card += str(random.randrange(10))
+            if card not in card_list:
+                break
         PIN = ""
         for i in range(4):
             PIN += str(random.randrange(10))
@@ -25,8 +36,45 @@ while option != 0:  # Create new account option
         print(PIN)
         print()
 
+        card_list.append(card)
+        pin_list.append(PIN)
+        balance_list.append(0)
+
     elif option == 2:  # Log into account option
-        pass
+        print()
+        print("Enter your card number:")
+        card = input()
+        print("Enter your PIN:")
+        PIN = input()
+        print()
+
+        if card in card_list:
+            if pin_list[card_list.index(card)] == PIN:
+                print("You have successfully logged in!")
+                print()
+
+                current_card = card
+                current_id = card_list.index(current_card)
+                account_option = 100
+
+                while account_option != 2:
+                    print(account_menu)
+                    account_option = int(input())
+                    print()
+                    if account_option == 0:
+                        option = 0
+                        account_option = 2
+                    elif account_option == 1:
+                        print("Balance:", balance_list[current_id], sep=" ")
+                    print()
+                print("You have successfully logged out!")
+                print()
+            else:
+                print("Wrong card number or PIN!")
+                print()
+        else:
+            print("Wrong card number or PIN!")
+            print()
 
 print()
 print("Bye!")
